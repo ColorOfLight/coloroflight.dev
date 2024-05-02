@@ -1,4 +1,4 @@
-import Canvas from "./modules/Canvas";
+import Canvas from "./organisms/Canvas";
 
 export default function FirstWebGPUPage() {
   return (
