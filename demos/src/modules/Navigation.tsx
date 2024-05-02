@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHouse } from "@fortawesome/free-solid-svg-icons";
 
 export interface NavigationProps extends React.ComponentProps<"nav"> {}
 export interface NavigationItemProps extends React.ComponentProps<"li"> {
@@ -17,6 +19,11 @@ const Navigation = ({ className, children, ...restProps }: NavigationProps) => {
       }
       {...restProps}
     >
+      <Link href="/">
+        <div className="mb-2">
+          <FontAwesomeIcon className="text-gray-400 w-4 h-4" icon={faHouse} />
+        </div>
+      </Link>
       <ul className="flex flex-col gap-2">{children}</ul>
     </nav>
   );
