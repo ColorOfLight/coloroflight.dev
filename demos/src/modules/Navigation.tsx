@@ -21,7 +21,10 @@ const Navigation = ({ className, children, ...restProps }: NavigationProps) => {
     >
       <Link href="/">
         <div className="mb-2">
-          <FontAwesomeIcon className="text-gray-400 w-4 h-4" icon={faHouse} />
+          <FontAwesomeIcon
+            className="text-gray-400 w-4 h-4 hover:text-gray-500"
+            icon={faHouse}
+          />
         </div>
       </Link>
       <ul className="flex flex-col gap-2">{children}</ul>
@@ -41,7 +44,7 @@ const NavigationItem = ({
     <Link href={to}>
       <li
         className={
-          "text-gray-900" +
+          "text-gray-900 hover:font-semibold" +
           (isCurrentPath ? " font-medium" : "") +
           (` className` ?? "")
         }
