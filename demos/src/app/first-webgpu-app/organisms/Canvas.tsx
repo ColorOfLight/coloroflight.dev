@@ -1,9 +1,9 @@
 "use client";
 
-import useWebGPU from "../hooks/useWebGPU";
+import useGame from "../hooks/useGame";
 
 const Canvas = () => {
-  const { canvasRef } = useWebGPU();
+  const { canvasRef } = useGame();
 
   return (
     <canvas

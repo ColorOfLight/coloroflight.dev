@@ -9,5 +9,5 @@ export function runAtInterval(fn: () => void, interval: number) {
     requestAnimationFrame(frame);
   }
 
-  requestAnimationFrame(frame);
+  return requestAnimationFrame(frame);
 }
