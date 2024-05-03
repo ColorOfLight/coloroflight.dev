@@ -21,8 +21,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="flex flex-row h-screen">
           <Navigation className="basis-64 grow-0 shrink-0">
-            <NavigationItem to="/first-webgpu-app">
-              First WebGPU App
+            <NavigationItem to="/webgpu-conway">
+              WebGPU Conway&apos;s Game
             </NavigationItem>
           </Navigation>
           <main className="grow">{children}</main>
