@@ -1,5 +1,7 @@
 import { useRef, useEffect } from "react";
 
+import { runAtInterval } from "@/utils/animation";
+
 import vertexShader from "../shaders/vertex.wgsl";
 import fragmentShader from "../shaders/fragment.wgsl";
 import computeShader from "../shaders/compute.wgsl";
@@ -260,7 +262,7 @@ const runWebGPU = async (canvas: HTMLCanvasElement) => {
   // Schedule updateGrid() to run repeatedly
   let step = 0;
   // updateGrid();
-  setInterval(updateGrid, UPDATE_INTERVAL);
+  runAtInterval(updateGrid, UPDATE_INTERVAL);
 };
 
 const useWebGPU = () => {
