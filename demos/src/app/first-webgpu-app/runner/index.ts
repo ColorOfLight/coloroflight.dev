@@ -19,16 +19,13 @@ const runGame = async (
   });
 
   let step = 0;
-  const animationIndex = runAtInterval(() => {
+  const cancelAnimation = runAtInterval(() => {
     updateGrid(step);
     step++;
   }, interval);
 
   return () => {
-    cancelAnimationFrame(animationIndex);
-    initGameResult.vertexBuffer.destroy();
-    resources.uniformBuffer.destroy();
-    resources.cellStateStorage.forEach((storage) => storage.destroy());
+    cancelAnimation();
   };
 };
 
