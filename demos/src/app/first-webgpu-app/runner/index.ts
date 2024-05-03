@@ -25,6 +25,9 @@ const runGame = async (
   }, interval);
 
   return () => {
+    initGameResult.vertexBuffer.destroy();
+    resources.uniformBuffer.destroy();
+    resources.cellStateStorage.forEach((storage) => storage.destroy());
     cancelAnimation();
   };
 };
