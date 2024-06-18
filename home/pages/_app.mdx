@@ -1,7 +1,9 @@
 import { AppProps } from "next/app";
 
+import { noto } from '@/modules/font';
+
 import "../styles/global.css";
 
 export default function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+  return <main className={noto.className}><Component {...pageProps} /></main>;
 }
