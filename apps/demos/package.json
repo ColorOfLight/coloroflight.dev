@@ -19,6 +19,7 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@types/react": "^18.3.3",
     "@webgpu/types": "^0.1.40",
     "postcss": "^8",
     "raw-loader": "^4.0.2",
