@@ -1,0 +1,10 @@
+{
+  "cSpell.words": [
+    "wgsl"
+  ],
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ]
+}

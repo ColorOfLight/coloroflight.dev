@@ -1,5 +1,10 @@
 # coloroflight.dev
 
+## How to run
+
+- Install pnpm & node (> 18)
+- run `pnpm i && pnpm dev`
+
 ## License
 
 ### Code
