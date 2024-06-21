@@ -45,5 +45,5 @@ export default {
   },
   head,
   footer: { text: footerText },
-  toc: false,
+  toc: {},
 };
