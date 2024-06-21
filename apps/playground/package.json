@@ -1,0 +1,27 @@
+{
+  "name": "playground",
+  "version": "1.0.0",
+  "description": "Playground by ColorOfLight",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "keywords": [],
+  "author": "Seongho Park",
+  "license": "MIT",
+  "dependencies": {
+    "@repo/common-assets": "workspace:*",
+    "next": "^14.2.4",
+    "nextra": "^2.13.4",
+    "nextra-theme-docs": "^2.13.4",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4"
+  }
+}
