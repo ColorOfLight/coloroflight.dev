@@ -1,11 +1,11 @@
-import LogoImage from "@repo/common-assets/images/logo.svg";
+import FaviconImage from "@repo/common-assets/images/logo-favicon.svg";
 
 const YEAR = new Date().getFullYear();
 
 const meta = {
   title: "ColorOfLight",
   description: "ColorOfLight's personal page.",
-  image: LogoImage.src,
+  image: FaviconImage.src,
 };
 
 const head = () => (
