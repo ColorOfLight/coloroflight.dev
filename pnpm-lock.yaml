@@ -24,6 +24,9 @@ importers:
 
   apps/home:
     dependencies:
+      '@repo/common-assets':
+        specifier: workspace:*
+        version: link:../../packages/common-assets
       nextra:
         specifier: ^2.13.4
         version: 2.13.4(next@14.2.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -64,6 +67,9 @@ importers:
 
   apps/playground:
     dependencies:
+      '@repo/common-assets':
+        specifier: workspace:*
+        version: link:../../packages/common-assets
       next:
         specifier: ^14.2.4
         version: 14.2.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -79,6 +85,8 @@ importers:
       react-dom:
         specifier: ^18
         version: 18.3.1(react@18.3.1)
+
+  packages/common-assets: {}
 
   packages/eslint-config:
     devDependencies:
