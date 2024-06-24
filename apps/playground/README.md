@@ -37,7 +37,7 @@ cd ..
 ```zsh
 # You can add compressing options like -O0, -O2, -Oz, and etc.
 
-emcc cpps/{TARGET_CPP_FILE} -o public/emscripten/{OUTPUT_NAME} -s EXPORTED_RUNTIME_METHODS=cwrap,ccall -s MODULARIZE=1 -s EXPORT_NAME='createModule' -s ENVIRONMENT=web --bind
+emcc cpps/{TARGET_CPP_FILE} -o public/emscripten/{OUTPUT_NAME} -s EXPORTED_RUNTIME_METHODS=cwrap,ccall -s MODULARIZE=1 -s EXPORT_NAME='createEmscriptenModule' -s ENVIRONMENT=web --bind
 ```
 
-- Implement `d.ts` file for extra functions and use it for `useEmscripten`
+- Update types in `types/emscripten-custom.d.ts` for extra functions

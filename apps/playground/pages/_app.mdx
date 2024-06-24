@@ -1,9 +1,15 @@
-import { AppProps } from "next/app";
-
+import Script from 'next/script';
 import { noto } from '@/modules/font';
 
 import "../styles/global.css";
 
 export default function MyApp({ Component, pageProps }) {
-  return <main className={noto.className}><Component {...pageProps} /></main>;
+  return (
+    <>
+      <main className={noto.className}>
+        <Component {...pageProps} />
+      </main>
+      <Script src="/emscripten/module.js" strategy="beforeInteractive" />
+    </>
+  );
 }

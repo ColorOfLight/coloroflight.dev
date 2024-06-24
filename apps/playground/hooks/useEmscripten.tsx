@@ -1,34 +1,24 @@
-import { useState } from "react";
-import Script from "next/script";
+import { useState, useEffect } from "react";
 
-const useEmscripten = <ExtraFunctions = {},>(modulePath: string) => {
-  const [moduleLoaded, setModuleLoaded] = useState(false);
-  const [moduleError, setModuleError] = useState<Error | null>(null);
+const useEmscripten = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [emscriptenModule, setEmscriptenModule] =
+    useState<ExtendedEmscriptenModule>();
 
-  const createModule = async () => {
-    if (!moduleLoaded) {
-      throw new Error("Module not loaded");
+  useEffect(() => {
+    if (window.createEmscriptenModule === undefined) {
+      throw new Error("Emscripten module not found");
     }
 
-    if (moduleError) {
-      throw moduleError;
-    }
-
-    return (window as any).createModule() as EmscriptenModule & ExtraFunctions;
-  };
-
-  const EmscriptenScript = () => (
-    <Script
-      src={modulePath}
-      onLoad={() => setModuleLoaded(true)}
-      onError={() => setModuleError(new Error("Failed to load module"))}
-    />
-  );
+    window.createEmscriptenModule().then((module) => {
+      setEmscriptenModule(module);
+      setIsLoaded(true);
+    });
+  }, []);
 
   return {
-    moduleLoaded,
-    createModule,
-    Script: EmscriptenScript,
+    isLoaded,
+    emscriptenModule,
   };
 };
 

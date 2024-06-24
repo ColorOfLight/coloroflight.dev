@@ -1,36 +1,48 @@
-import { useEffect } from "react";
+import { useState, useCallback } from "react";
 
 import useEmscripten from "@/hooks/useEmscripten";
-import { ExtraFunctions } from "@/public/emscripten/simulate_dice_trials";
 
 const Content = (): JSX.Element => {
-  const { moduleLoaded, createModule, Script } = useEmscripten<ExtraFunctions>(
-    "/emscripten/simulate_dice_trials.js"
-  );
+  const [result, setResult] = useState<number | null>(null);
+  const { isLoaded: isModuleLoaded, emscriptenModule } = useEmscripten();
 
-  useEffect(() => {
-    const runSimulate = async () => {
-      const wasmModule = await createModule();
-
-      const results = wasmModule.simulate_dice_trials(100);
-
-      const keys = results.keys();
-
-      for (let i = 0; i < keys.size(); ++i) {
-        const key = keys.get(i);
-        const value = results.get(key);
-        console.log("Dice value " + key + ": " + value);
-      }
-    };
-
-    if (moduleLoaded) {
-      runSimulate();
+  const simulateDiceTrials = useCallback(() => {
+    if (!isModuleLoaded || emscriptenModule === undefined) {
+      throw new Error("Emscripten module not loaded");
     }
-  }, [moduleLoaded]);
+
+    return emscriptenModule.simulate_dice_trials;
+  }, [isModuleLoaded, emscriptenModule]);
+
+  const rollDice = useCallback(async () => {
+    const simulate = await simulateDiceTrials();
+    const results = simulate(1);
+
+    const keys = results.keys();
+
+    for (let i = 0; i < keys.size(); ++i) {
+      const key = keys.get(i);
+      const value = results.get(key);
+      if (value > 0) {
+        setResult(key);
+        return;
+      }
+    }
+
+    throw new Error("No dice value found");
+  }, [simulateDiceTrials]);
 
   return (
     <>
-      <Script />
+      <div className="border my-4 p-4 flex rounded gap-4 items-center">
+        <button
+          className="border px-4 py-2 rounded bg-slate-500/15 hover:bg-slate-200/20"
+          onClick={rollDice}
+        >
+          Roll a dice!
+        </button>
+        <p>Result: {result ?? ""}</p>
+      </div>
     </>
   );
 };
