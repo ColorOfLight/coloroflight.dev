@@ -4,7 +4,7 @@
 
 using namespace std;
 
-map<int, int> simulate_dice_trials(int nDices, int trials)
+map<int, int> simulate_dice_trials(int trials)
 {
   map<int, int> result;
 
@@ -15,12 +15,7 @@ map<int, int> simulate_dice_trials(int nDices, int trials)
 
   for (int t = 0; t < trials; ++t)
   {
-    int sum = 0;
-    for (int d = 0; d < nDices; ++d)
-    {
-      sum += dis(gen);
-    }
-    result[sum]++;
+    result[dis(gen)]++;
   }
 
   return result;
