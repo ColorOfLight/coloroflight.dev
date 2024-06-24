@@ -1,19 +1,21 @@
-import { useEffect, useState } from "react";
-import Script from "next/script";
+import { useEffect } from "react";
+
+import useEmscripten from "@/hooks/useEmscripten";
+import { ExtraFunctions } from "@/public/emscripten/simulate_dice_trials";
 
 const Content = (): JSX.Element => {
-  const [moduleLoaded, setModuleLoaded] = useState(false);
-
-  const [a, setA] = useState(false);
+  const { moduleLoaded, createModule, Script } = useEmscripten<ExtraFunctions>(
+    "/emscripten/simulate_dice_trials.js"
+  );
 
   useEffect(() => {
-    // TODO: Replace with the appropriate wasm module
-    const test = async () => {
-      const wasmModule = await window.createModule();
+    const runSimulate = async () => {
+      const wasmModule = await createModule();
 
-      const results = wasmModule.simulate_dice_trials(1, 1000000);
+      const results = wasmModule.simulate_dice_trials(100);
 
       const keys = results.keys();
+
       for (let i = 0; i < keys.size(); ++i) {
         const key = keys.get(i);
         const value = results.get(key);
@@ -22,18 +24,13 @@ const Content = (): JSX.Element => {
     };
 
     if (moduleLoaded) {
-      test();
+      runSimulate();
     }
   }, [moduleLoaded]);
 
   return (
     <>
-      <Script
-        src="/wasm/simulate_dice_trials.js"
-        onLoad={() => {
-          setModuleLoaded(true);
-        }}
-      />
+      <Script />
     </>
   );
 };
