@@ -13,6 +13,9 @@
 - Run following commands:
 
 ```zsh
+# Move to emsdk directory
+cd emsdk
+
 # Fetch the latest version of the emsdk (not needed the first time you clone)
 git pull
 
@@ -24,10 +27,15 @@ git pull
 
 # Activate PATH and other environment variables in the current terminal
 source ./emsdk_env.sh
+
+# Move back to root directory
+cd ..
 ```
 
-- run command to generate wasm file (This instruction should be fixed):
+- run command to generate wasm file:
 
 ```zsh
-emcc {YOUR_CPP_FILE} -s EXPORTED_FUNCTIONS="['_add_one']" -s EXTRA_EXPORTED_RUNTIME_METHODS='["cwrap"]' -o add.js
+# You can add compressing options like -O0, -O2, -Oz, and etc.
+
+emcc wasm/{TARGET_CPP_FILE} -o public/wasm/{OUTPUT_NAME} -s EXPORTED_RUNTIME_METHODS=cwrap,ccall -s MODULARIZE=1 -s EXPORT_NAME='createModule' -s ENVIRONMENT=web --bind
 ```

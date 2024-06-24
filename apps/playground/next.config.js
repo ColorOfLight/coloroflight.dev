@@ -8,7 +8,7 @@ const withNextra = require('nextra')({
  */
 module.exports = withNextra({
   webpack: (config, {isServer}) => {
-    config.experiments.asyncWebAssembly = true;
+    config.experiments = { asyncWebAssembly: true, syncWebAssembly: true, ...config.experiments };
 
     // fix warnings for async functions in the browser (https://github.com/vercel/next.js/issues/64792#issuecomment-2148766770)
     if (!isServer) {
