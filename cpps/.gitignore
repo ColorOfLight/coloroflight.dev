@@ -1,0 +1,100 @@
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Build directories
+/build/
+/out/
+/bin/
+/lib/
+/obj/
+/dist/
+/Debug/
+/Release/
+/build-release/
+/build-debug/
+/build-relwithdebinfo/
+/build-minsizerel/
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+*.def
+*.exp
+
+# Shared libraries (Windows)
+*.dll
+
+# Shared libraries (Unix)
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+*.pgd
+*.pi
+*.plist
+
+# VCPKG directories
+/vcpkg_installed/
+/vcpkg/buildtrees/
+/vcpkg/downloads/
+/vcpkg/packages/
+/vcpkg/installed/
+/vcpkg/triplets/*/installed/
+
+# Other ignored files
+*.swp
+*.bak
+*.tmp
+*.log
+*.stackdump
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.userprefs
+*.pidb
+*.sdf
+*.sqlite
+*.prj
+*.mode1v3
+*.mode2v3
+*.modev3
+*.contrib
+
+# Clion specific files
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Emscripten
+emsdk/
+
+# VC Package Manager
+vcpkg/
