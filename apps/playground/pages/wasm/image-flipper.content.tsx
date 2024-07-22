@@ -8,6 +8,7 @@ import ModuleWasm from "@/wasm/module.wasm";
 const Content = (): JSX.Element => {
   const imageRef = useRef<HTMLImageElement>(null);
   const [outImageLink, setOutImageLink] = useState<string>();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { emModule, isLoaded: isModuleLoaded } = useEmscriptenModule(
     Module,
@@ -16,6 +17,8 @@ const Content = (): JSX.Element => {
 
   const flipImage = useCallback(async () => {
     if (isModuleLoaded && emModule) {
+      setIsLoading(true);
+
       const img = imageRef.current;
       if (img == null) {
         throw new Error("Image not found");
@@ -51,6 +54,8 @@ const Content = (): JSX.Element => {
       }, "image/png");
 
       canvas.remove();
+
+      setIsLoading(false);
     }
   }, [isModuleLoaded, emModule]);
 
@@ -68,6 +73,7 @@ const Content = (): JSX.Element => {
         <button
           className="border px-4 py-2 rounded bg-slate-500/15 hover:bg-slate-200/20"
           onClick={flipImage}
+          disabled={isLoading}
         >
           Flip Image!
         </button>
