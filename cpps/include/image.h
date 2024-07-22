@@ -105,6 +105,16 @@ class Image {
     data_ = temp;
   }
 
+  void FlipX() {
+    std::vector<Color> temp(width_ * height_);
+    for (int y = 0; y < height_; y++) {
+      for (int x = 0; x < width_; x++) {
+        temp[y * width_ + (width_ - 1 - x)] = data_[y * width_ + x];
+      }
+    }
+    data_ = temp;
+  }
+
   Color at(int x, int y) const {
     if (x < 0 || x >= width_) {
       throw std::out_of_range("x: " + std::to_string(x) +
