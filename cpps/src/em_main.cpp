@@ -7,10 +7,10 @@
 #include "./image.h"
 
 void FlipImage() {
-  Image<RgbaColor> image = ReadPng("/working/input.png");
-  image.FlipY();
+  Image<RgbaColor> image = ReadPng("/input.png");
+  image.FlipX();
 
-  WritePng("/working/output.png", image);
+  WritePng("/output.png", image);
 }
 
 std::map<int, int> simulate_dice_trials(int trials) {
