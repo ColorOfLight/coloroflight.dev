@@ -1,18 +1,24 @@
 import { useState, useCallback } from "react";
 
-import useEmscripten from "@/hooks/useEmscripten";
+import useEmscriptenModule from "@/hooks/useEmscriptenModule";
+
+import Module from "@/wasm/module";
+import ModuleWasm from "@/wasm/module.wasm";
 
 const Content = (): JSX.Element => {
   const [result, setResult] = useState<number | null>(null);
-  const { isLoaded: isModuleLoaded, emscriptenModule } = useEmscripten();
+  const { emModule, isLoaded: isModuleLoaded } = useEmscriptenModule(
+    Module,
+    ModuleWasm
+  );
 
   const simulateDiceTrials = useCallback(() => {
-    if (!isModuleLoaded || emscriptenModule === undefined) {
+    if (!isModuleLoaded || emModule === undefined) {
       throw new Error("Emscripten module not loaded");
     }
 
-    return emscriptenModule.simulate_dice_trials;
-  }, [isModuleLoaded, emscriptenModule]);
+    return emModule.simulate_dice_trials;
+  }, [isModuleLoaded, emModule]);
 
   const rollDice = useCallback(async () => {
     const simulate = await simulateDiceTrials();

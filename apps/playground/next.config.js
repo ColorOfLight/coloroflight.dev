@@ -8,12 +8,18 @@ const withNextra = require('nextra')({
  */
 module.exports = withNextra({
   webpack: (config, {isServer}) => {
-    config.experiments = { asyncWebAssembly: true, syncWebAssembly: true, ...config.experiments };
-
     // fix warnings for async functions in the browser (https://github.com/vercel/next.js/issues/64792#issuecomment-2148766770)
     if (!isServer) {
       config.output.environment = { ...config.output.environment, asyncFunction: true };
     }
+
+    config.module.rules.push({
+      test: /\.wasm$/,
+      type: 'asset/resource',
+      generator: {
+        filename: 'static/chunks/[name].[hash][ext]',
+      },
+    });
 
     return config;
   }

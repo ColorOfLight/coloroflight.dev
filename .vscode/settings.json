@@ -6,5 +6,6 @@
     {
       "mode": "auto"
     }
-  ]
+  ],
+  "cmake.sourceDirectory": "/Users/seongho/Documents/workspaces/coloroflight.dev/cpps"
 }

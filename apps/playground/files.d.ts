@@ -1,4 +1,4 @@
 declare module "*.wasm" {
-  const value: Promise<any>;
+  const value: string;
   export default value;
 }
