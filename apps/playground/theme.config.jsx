@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import LogoImage from "@repo/common-assets/images/logo.svg";
 import FaviconImage from "@repo/common-assets/images/logo-favicon.svg";
@@ -45,5 +46,15 @@ export default {
   },
   head,
   footer: { text: footerText },
-  toc: {},
+  toc: {
+    component: null,
+  },
+  useNextSeoProps() {
+    const { asPath } = useRouter();
+    if (asPath !== "/") {
+      return {
+        titleTemplate: "%s – ColorOfLight",
+      };
+    }
+  },
 };
