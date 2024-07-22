@@ -2,14 +2,14 @@ import { useState, useCallback } from "react";
 
 import useEmscriptenModule from "@/hooks/useEmscriptenModule";
 
-import ModuleDice from "@/wasm/moduleDice";
-import ModuleDiceWasm from "@/wasm/moduleDice.wasm";
+import Module from "@/wasm/module";
+import ModuleWasm from "@/wasm/module.wasm";
 
 const Content = (): JSX.Element => {
   const [result, setResult] = useState<number | null>(null);
   const { emModule, isLoaded: isModuleLoaded } = useEmscriptenModule(
-    ModuleDice,
-    ModuleDiceWasm
+    Module,
+    ModuleWasm
   );
 
   const simulateDiceTrials = useCallback(() => {

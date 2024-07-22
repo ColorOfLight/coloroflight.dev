@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 
-import { WasmModule } from "@/wasm/_types";
+import { ExtendedEmModule, WasmModule } from "@/wasm/_types";
 
 const useEmscriptenModule = <M extends WasmModule<MF>, MF>(
   wasmModule: M & WasmModule<MF>,
   wasmBinaryPath: string
 ) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [emModule, setEmModule] = useState<EmscriptenModule & MF>();
+  const [emModule, setEmModule] = useState<ExtendedEmModule & MF>();
 
   useEffect(() => {
     wasmModule({
