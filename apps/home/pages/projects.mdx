@@ -19,12 +19,28 @@ export const personalProjects = [
   },
 ];
 
+export const archivedProjects = [
+  {
+    name: "Explainable WebGPU",
+    description: "WebGPU를 이용해 기초 그래픽 개념을 구현하려 했던 프로젝트입니다.",
+    url: "https://github.com/ColorOfLight/explainable-webgpu",
+  },
+];
+
 # Projects
 
 ## 개인 프로젝트
 
 <ProjectList>
   {personalProjects.map((project, index) => (
+    <ProjectCard key={index} {...project} />
+  ))}
+</ProjectList>
+
+## 아카이브
+
+<ProjectList>
+  {archivedProjects.map((project, index) => (
     <ProjectCard key={index} {...project} />
   ))}
 </ProjectList>
