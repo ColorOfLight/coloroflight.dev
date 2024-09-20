@@ -29,10 +29,13 @@ const head = () => (
 );
 
 const footer = (
+  <>
+  <hr></hr>
   <footer>
     <p>Powered by Nextra</p>
     <p className="text-right">{YEAR} © ColorOfLight (Seongho Park)</p>
   </footer>
+  </>
 );
 
 export default {
