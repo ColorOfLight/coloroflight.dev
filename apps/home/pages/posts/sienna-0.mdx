@@ -1,0 +1,73 @@
+---
+title: "Project Sienna: 3D 에어브러쉬 구현 도전의 기록"
+date: 2024/11/06
+---
+
+안녕하세요! 그래픽 엔지니어 전향을 위한 포트폴리오로,
+3D 물체에 에어브러시 효과를 줄 수 있는 프로젝트인 [**Project Sienna**](https://project-sienna.coloroflight.dev/)를 진행했습니다.
+
+![Project Sienna 구현 데모](/images/sienna-demo.gif)
+*Project Sienna 구현 데모*
+
+에어브러시 효과를 구현하면서 다양한 기술적 문제들을 겪고 해결하기를 반복했는데요, 웹 상에서 쉽게 해결책을 찾을 수 없는 재밌는 문제들도 많았습니다. 그래서 그 중 일부를 같이 공유해보려 합니다.
+
+(데스크탑 환경에서 보고 계신 분들은 [이 링크](https://project-sienna.coloroflight.dev/)에서 데모를 해보시는 걸 추천드립니다!)
+
+## 에어브러쉬의 페인트 효과 범위 구하기
+
+이번 프로젝트에서 가장 처음 맞닥뜨린 도전은, 유저의 마우스 클릭 위치를 기준으로 적용할 브러쉬 페인트 효과를 구하는 것이었습니다.
+
+화면의 지점과 3D 물체의 교차 지점을 구할 때에는 일반적으로 [Ray casting](https://en.wikipedia.org/wiki/Ray_casting), 화면의 지점으로부터 광선을 3D 물체에 발사해 그 교차 지점을 수학적으로 구하는 방법을 사용합니다.
+
+그러나 에어브러쉬는 하나의 지점이 아닌 원뿔 모양의 범위에 페인트를 뿌리기 때문에, 물체의 여러 면에 걸쳐 페인트 효과를 적용할 수 있습니다. 그래서 하나의 광선을 이용해 구한 교차 지점만으로는 페인트 효과 범위를 구하기 어려웠습니다.
+물론 여러 개의 광선을 사용할 수 있지만, 이 경우 각 지점 별 페인트 효과를 계산을 복잡하게 만드는 문제가 있었습니다.
+
+![브러쉬 효과 영역](/images/sienna-pinhole-brush.jpg)
+*카메라의 원리를 이용해 브러쉬 효과 영역 구하기 (Modified from [Camera models](https://commons.wikimedia.org/wiki/File:Camera_models.jpg))*
+
+그래서 이번 프로젝트에서는 **브러쉬에 핀홀 카메라가 하나 있다 가정한 뒤, 카메라가 관찰할 수 있는 영역을 구하는 방식**을 사용했습니다.
+에어브러쉬는 브러쉬로부터 멀어질수록 더 넓은 범위에 페인트를 분사하게 되는데요, 핀홀 카메라도 마찬가지로 카메로부터 멀어질수록 더 넓은 범위를 볼 수 있게 됩니다.
+따라서, 브러쉬의 시점에서 유저가 클릭한 방향으로 바라보는 핀홀 카메라가 관찰할 수 있는 영역을 구하면, 그 범위가 바로 에어브러쉬의 페인트 적용 범위가 됩니다.
+
+위 방식을 활용해 유저가 마우스를 누르고 있는 순간마다 브러쉬를 위한 카메라 변수를 계산하고 이를 뒤에 언급할 쉐이더에 넘겨주었고, 이를 통해 에어브러쉬의 페인트 효과를 구현할 수 있었습니다. ([연관 코드 링크](https://github.com/ColorOfLight/project-sienna/blob/v0.2.4/cpps/src/system/gr_sync_system.cpp#L182))
+
+## 에어브러쉬 페인트 효과 텍스쳐에 적용하기
+
+다음으로 만난 기술적 도전은 3D 물체에 에어브러쉬의 페인트 효과를 업데이트하는 것이었습니다.
+
+에어브러쉬의 페인트 효과는 계속해서 누적되어야 하기 때문에 물체의 각 면마다 페인트 정보를 가지고 있어야 했는데요,
+이를 위해 각 면마다 업데이트할 페인트 텍스쳐(Paint Texture)와 페인트칠된 텍스쳐(Painted Texture), 총 2가지의 2D 텍스쳐를 만들어 사용했습니다.
+
+그리고 각 텍스쳐의 픽셀 별로 에어브러쉬의 페인트 효과를 계산해야 했는데요,
+이를 위해 Paint Texture를 업데이트하는 쉐이더들을 작성했습니다.
+
+Vertex shader([코드 링크](https://github.com/ColorOfLight/project-sienna/blob/v0.2.4/cpps/include/shader/source.h#L63))에서는 보통 최종 좌표로 3D 물체의 clip space 내 좌표를 사용하는데요,
+이번 쉐이더의 타겟은 텍스쳐이기 때문에, [-1, 1] 범위로 매핑된 텍스쳐 좌표를 넘기고, 향후 페인트의 효과 계산을 위해 넘겨주는 추가 인자에 3D 물체의 global space 내 좌표를 넘겨주도록 했습니다.
+
+그리고 fragment shader([코드 링크](https://github.com/ColorOfLight/project-sienna/blob/v0.2.4/cpps/include/shader/source.h#L124))에서 각 텍스쳐 좌표별 에어브러쉬의 색상 및 효과 강도를 계산하도록 해 Paint Texture의 각 텍스쳐 값을 구할 수 있게 했습니다.
+
+위 shader로부터 나온 결과를 OpenGL의 [framebuffer to texture](https://learnopengl.com/Advanced-OpenGL/Framebuffers) 기법을 사용해 스크린 대신 Paint Texture에 렌더링해 페인트 효과를 적용할 Paint Texture을 구할 수 있었습니다.
+
+
+## 최종 페인트 효과 블렌딩하기
+
+마지막 기술적 어려움은 Painted Texture를 업데이트할 때, 기존 페인트 색상을 고려해 자연스럽게 블렌딩된 페인트 색상 및 강도를 구하는 것이었습니다.
+
+다른 색의 에어브러쉬 효과의 경우, 강도가 약할 때엔 기존 색과 섞여야 하나, 강도가 강할 때는 기존 색을 덮어쓰기해야 합니다. 제가 사용한 [OpenGL에서 기본적인 블렌딩](https://learnopengl.com/Advanced-OpenGL/Blending)을 지원하고 있으나 이를 통해 위 효과를 구현하는 것은 불가능했습니다.
+
+이 문제를 해결하기 위해 Paint Texutre와 기존 Painted Texture를 받아 신규 Painted Texture를 구하는 쉐이더([코드 링크](https://github.com/ColorOfLight/project-sienna/blob/v0.2.4/cpps/include/shader/source.h#L171))를 하나 더 만들었습니다.
+그리고 OpenGL에서는 업데이트 대상이 되는 framebuffer에 binding된 텍스쳐를 셰이더 내에서 사용할 수 없어 ping pong 텍스쳐 기법, 즉, 업데이트할 Painted Texture와 업데이트에 사용할 Painted Texture를 번갈아 가면서 사용하도록 했습니다.
+
+이를 통해 다른 색상의 페인트칠도 자연스럽게 블렌딩할 수 있었습니다.
+
+---
+
+위 기술 난관들을 헤쳐나가면서 다양한 기법들을 사용해볼 수 있어 재밌었는데요, 좀 더 사실적인 페인트 효과를 위해 향후 PBR(Physically Based Rendering)을 적용해볼 계획입니다.
+
+또, texture 수정을 위해 framebuffer를 자주 스위칭하는데, 이는 [렌더링 성능에 영향](https://community.khronos.org/t/best-practices-for-ping-pong-shading/6697)을 줄 수 있다고 합니다.
+그래서 향후 이를 개선하기 위해 물체별 framebuffer 수를 줄이고 framebuffer 전환를 최소화할 수 있도록 렌더링 과정을 개선할 계획입니다.
+
+혹시 이 프로젝트에 대한 피드백이나 질문이 있다면 [Github Issue](https://github.com/ColorOfLight/project-sienna/issues)에 남겨주시고, 코드도 자유롭게 참고 부탁드릴게요.
+
+읽어주셔서 감사합니다!
+
