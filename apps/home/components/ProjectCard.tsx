@@ -1,5 +1,4 @@
 import { memo, forwardRef, ComponentPropsWithoutRef } from "react";
-import Image from "next/image";
 
 export interface ProjectCardProps extends ComponentPropsWithoutRef<"a"> {
   name: string;
