@@ -17,12 +17,15 @@ export const personalProjects = [
     description: "컴퓨터 그래픽스의 기반 기술을 GPU를 사용하지 않고 구현한 프로젝트입니다.",
     url: "https://tiny.coloroflight.dev",
   },
+];
+
+export const extraProjects = [
   {
     name: "Playground",
     description: "웹 어셈블리 등 다양한 기술을 실험해보기 위한 프로젝트입니다.",
     url: "https://playground.coloroflight.dev",
   },
-];
+]
 
 export const suspendedProjects = [
   {
@@ -44,6 +47,14 @@ export const suspendedProjects = [
 
 <ProjectList>
   {personalProjects.map((project, index) => (
+    <ProjectCard key={index} {...project} />
+  ))}
+</ProjectList>
+
+## 기타 프로젝트
+
+<ProjectList>
+  {extraProjects.map((project, index) => (
     <ProjectCard key={index} {...project} />
   ))}
 </ProjectList>
